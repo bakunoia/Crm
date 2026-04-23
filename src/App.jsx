@@ -697,6 +697,7 @@ export default function CRM() {
   const iStyle = { padding:"8px 12px", border:"0.5px solid #d0cdc8", borderRadius:8, fontSize:14, fontFamily:"inherit", color:"#3a3a35", background:"#fff", width:"100%" };
   const card = { background:"#fff", border:"0.5px solid #e0ddd8", borderRadius:12, padding:18 };
 
+
   return (
     <div style={{ minHeight:"100vh", background:"#faf8f5", fontFamily:"'Sarabun','Noto Sans Thai',sans-serif" }}>
 
@@ -718,10 +719,12 @@ export default function CRM() {
         <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)" }}>{total} คน</div>
       </div>
 
+      {/* Banners */}
       {importError && <div style={{ background:"#fdecea", borderBottom:"1px solid #f5c0bb", padding:"10px 20px", fontSize:13, color:"#a32d2d", display:"flex", justifyContent:"space-between" }}>{importError}<button onClick={() => setImportError("")} style={{ background:"none", border:"none", cursor:"pointer", color:"#a32d2d", fontSize:16 }}>×</button></div>}
       {dbError && <div style={{ background:"#fdecea", borderBottom:"1px solid #f5c0bb", padding:"10px 20px", fontSize:13, color:"#a32d2d", display:"flex", justifyContent:"space-between" }}>{dbError}<button onClick={loadCustomers} style={{ background:"none", border:"none", cursor:"pointer", color:"#a32d2d", fontSize:12, textDecoration:"underline" }}>ลองใหม่</button></div>}
       {importSuccess && <div style={{ background:"#e8f5ee", borderBottom:"1px solid #b8ddc8", padding:"10px 20px", fontSize:13, color:FOREST }}>{importSuccess}</div>}
 
+      {/* Loading spinner */}
       {dbLoading && (
         <div style={{ display:"flex", alignItems:"center", justifyContent:"center", padding:"60px 20px", gap:10 }}>
           <div style={{ width:20, height:20, border:`3px solid #e0ddd8`, borderTopColor:FOREST, borderRadius:"50%", animation:"spin 0.8s linear infinite" }} />
@@ -730,188 +733,192 @@ export default function CRM() {
         </div>
       )}
 
-      {!dbLoading && <div style={{ padding:20 }}>
+      {/* Main content */}
+      {!dbLoading && (
+        <div style={{ padding:20 }}>
 
-        {/* Empty state */}
-        {customers.length === 0 && (
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"80px 20px", textAlign:"center" }}>
-            <div style={{ width:72, height:72, background:"#e8f5ee", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:18 }}>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 28V8a2 2 0 012-2h12l6 6v16a2 2 0 01-2 2H8a2 2 0 01-2-2z" stroke={FOREST} strokeWidth="1.5"/><path d="M20 6v6h6M11 17h10M11 21h6" stroke={FOREST} strokeWidth="1.5" strokeLinecap="round"/></svg>
+          {/* Empty state */}
+          {customers.length === 0 && (
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"80px 20px", textAlign:"center" }}>
+              <div style={{ width:72, height:72, background:"#e8f5ee", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:18 }}>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 28V8a2 2 0 012-2h12l6 6v16a2 2 0 01-2 2H8a2 2 0 01-2-2z" stroke={FOREST} strokeWidth="1.5"/><path d="M20 6v6h6M11 17h10M11 21h6" stroke={FOREST} strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </div>
+              <div style={{ fontSize:18, fontWeight:700, color:"#3a3a35", marginBottom:8 }}>ยังไม่มีข้อมูลลูกค้า</div>
+              <div style={{ fontSize:14, color:"#999", marginBottom:22, maxWidth:400, lineHeight:1.7 }}>
+                รองรับ <b style={{ color:FOREST }}>Agoda Booking</b> และ <b style={{ color:"#3a3a35" }}>ฟอร์มลูกค้าทั่วไป</b><br/>
+                กด Import Excel แล้วระบบจะตรวจ format อัตโนมัติ
+              </div>
+              <button onClick={() => fileRef.current.click()} style={{ background:FOREST, color:"#fff", border:"none", padding:"11px 28px", borderRadius:10, cursor:"pointer", fontSize:15, fontFamily:"inherit", fontWeight:600, display:"flex", alignItems:"center", gap:8 }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 6l4 4 4-4M2 12h12v2H2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                เลือกไฟล์ Excel
+              </button>
+              <div style={{ marginTop:16, fontSize:12, color:"#ccc" }}>รองรับ .xlsx .xls .csv — Agoda Export / ฟอร์มลูกค้า</div>
             </div>
-            <div style={{ fontSize:18, fontWeight:700, color:"#3a3a35", marginBottom:8 }}>ยังไม่มีข้อมูลลูกค้า</div>
-            <div style={{ fontSize:14, color:"#999", marginBottom:22, maxWidth:400, lineHeight:1.7 }}>
-              รองรับ <b style={{ color:FOREST }}>Agoda Booking</b> และ <b style={{ color:"#3a3a35" }}>ฟอร์มลูกค้าทั่วไป</b><br/>
-              กด Import Excel แล้วระบบจะตรวจ format อัตโนมัติ
-            </div>
-            <button onClick={() => fileRef.current.click()} style={{ background:FOREST, color:"#fff", border:"none", padding:"11px 28px", borderRadius:10, cursor:"pointer", fontSize:15, fontFamily:"inherit", fontWeight:600, display:"flex", alignItems:"center", gap:8 }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 6l4 4 4-4M2 12h12v2H2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              เลือกไฟล์ Excel
-            </button>
-            <div style={{ marginTop:16, fontSize:12, color:"#ccc" }}>รองรับ .xlsx .xls .csv — Agoda Export / ฟอร์มลูกค้า</div>
-          </div>
-        )}
+          )}
 
-        {/* Dashboard */}
-        {tab === "dashboard" && customers.length > 0 && (
-          <div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20 }}>
-              {[
-                { label:"ลูกค้าทั้งหมด", val:total, sub:`OTA ${agodaCount} คน`, accent:"#888" },
-                { label:"สายลุย (ดงดิบ)", val:hikeCount, sub:"เดินป่า / ผจญภัย", accent:FOREST },
-                { label:"สายชิลล์ (สวนบ้านนอก)", val:stayCount, sub:"โฮมสเตย์ / พักผ่อน", accent:BRICK },
-                { label:"Legend Members", val:legendCount, sub:"5+ ครั้ง", accent:"#e6a500" },
-              ].map((s,i) => (
-                <div key={i} style={{ ...card, padding:0, overflow:"hidden", display:"flex" }}>
-                  <div style={{ width:4, background:s.accent, flexShrink:0 }} />
-                  <div style={{ padding:"14px 16px" }}>
-                    <div style={{ fontSize:12, color:"#888", marginBottom:6, fontWeight:500 }}>{s.label}</div>
-                    <div style={{ fontSize:30, fontWeight:700, color:"#3a3a35", lineHeight:1 }}>{s.val}</div>
-                    <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{s.sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
-              <div style={card}>
-                <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:14 }}>Member Status</div>
-                {[{ label:"Newbie", count:newbieCount, color:"#aaa" },{ label:"Regular", count:regularCount, color:FOREST },{ label:"Legend ⭐", count:legendCount, color:"#e6a500" }].map((m,i)=>(
-                  <div key={i} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
-                    <div style={{ fontSize:13, width:80, color:"#3a3a35" }}>{m.label}</div>
-                    <div style={{ flex:1, height:10, background:"#eee", borderRadius:5, overflow:"hidden" }}>
-                      <div style={{ width:Math.round(m.count/maxBar*100)+"%", height:"100%", background:m.color, borderRadius:5 }} />
+          {/* Dashboard */}
+          {tab === "dashboard" && customers.length > 0 && (
+            <div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20 }}>
+                {[
+                  { label:"ลูกค้าทั้งหมด", val:total, sub:`OTA ${agodaCount} คน`, accent:"#888" },
+                  { label:"สายลุย (ดงดิบ)", val:hikeCount, sub:"เดินป่า / ผจญภัย", accent:FOREST },
+                  { label:"สายชิลล์ (สวนบ้านนอก)", val:stayCount, sub:"โฮมสเตย์ / พักผ่อน", accent:BRICK },
+                  { label:"Legend Members", val:legendCount, sub:"5+ ครั้ง", accent:"#e6a500" },
+                ].map((s,i) => (
+                  <div key={i} style={{ ...card, padding:0, overflow:"hidden", display:"flex" }}>
+                    <div style={{ width:4, background:s.accent, flexShrink:0 }} />
+                    <div style={{ padding:"14px 16px" }}>
+                      <div style={{ fontSize:12, color:"#888", marginBottom:6, fontWeight:500 }}>{s.label}</div>
+                      <div style={{ fontSize:30, fontWeight:700, color:"#3a3a35", lineHeight:1 }}>{s.val}</div>
+                      <div style={{ fontSize:11, color:"#999", marginTop:4 }}>{s.sub}</div>
                     </div>
-                    <div style={{ fontSize:13, color:"#888", width:24, textAlign:"right" }}>{m.count}</div>
                   </div>
                 ))}
-                <div style={{ marginTop:18, borderTop:"0.5px solid #f0ede8", paddingTop:14 }}>
-                  <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:10 }}>สัดส่วนเพศ</div>
-                  <div style={{ display:"flex", gap:10 }}>
-                    <div style={{ flex:1, textAlign:"center", background:"#e8f5ee", borderRadius:8, padding:10 }}>
-                      <div style={{ fontSize:24, fontWeight:700, color:FOREST }}>{maleCount}</div>
-                      <div style={{ fontSize:12, color:FOREST }}>ชาย</div>
-                    </div>
-                    <div style={{ flex:1, textAlign:"center", background:"#fdf0ea", borderRadius:8, padding:10 }}>
-                      <div style={{ fontSize:24, fontWeight:700, color:BRICK }}>{femaleCount}</div>
-                      <div style={{ fontSize:12, color:BRICK }}>หญิง</div>
-                    </div>
-                  </div>
-                </div>
               </div>
-              <div style={card}>
-                <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:4 }}>Cross-Sell Insights</div>
-                <div style={{ fontSize:12, color:"#999", marginBottom:12 }}>ลูกค้าโฮมสเตย์ที่ควรชวนลองเดินป่า</div>
-                {crossSellCandidates.length === 0 && <div style={{ fontSize:13, color:"#bbb", textAlign:"center", padding:"20px 0" }}>ยังไม่มีลูกค้าสายชิลล์</div>}
-                {crossSellCandidates.map((c,i)=>(
-                  <div key={i} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 0", borderBottom:i<crossSellCandidates.length-1?"0.5px solid #f0ede8":"none" }}>
-                    <div>
-                      <div style={{ fontSize:13, fontWeight:500, color:"#3a3a35" }}>{c.name}</div>
-                      <div style={{ fontSize:11, color:"#999" }}>
-                        {c.source === "agoda" ? `จอง ${c.visits}× · ห้อง ${c.lastRoom || "-"}` : "สวนบ้านนอก → ชวนลองดงดิบ"}
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+                <div style={card}>
+                  <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:14 }}>Member Status</div>
+                  {[{ label:"Newbie", count:newbieCount, color:"#aaa" },{ label:"Regular", count:regularCount, color:FOREST },{ label:"Legend ⭐", count:legendCount, color:"#e6a500" }].map((m,i)=>(
+                    <div key={i} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+                      <div style={{ fontSize:13, width:80, color:"#3a3a35" }}>{m.label}</div>
+                      <div style={{ flex:1, height:10, background:"#eee", borderRadius:5, overflow:"hidden" }}>
+                        <div style={{ width:Math.round(m.count/maxBar*100)+"%", height:"100%", background:m.color, borderRadius:5 }} />
+                      </div>
+                      <div style={{ fontSize:13, color:"#888", width:24, textAlign:"right" }}>{m.count}</div>
+                    </div>
+                  ))}
+                  <div style={{ marginTop:18, borderTop:"0.5px solid #f0ede8", paddingTop:14 }}>
+                    <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:10 }}>สัดส่วนเพศ</div>
+                    <div style={{ display:"flex", gap:10 }}>
+                      <div style={{ flex:1, textAlign:"center", background:"#e8f5ee", borderRadius:8, padding:10 }}>
+                        <div style={{ fontSize:24, fontWeight:700, color:FOREST }}>{maleCount}</div>
+                        <div style={{ fontSize:12, color:FOREST }}>ชาย</div>
+                      </div>
+                      <div style={{ flex:1, textAlign:"center", background:"#fdf0ea", borderRadius:8, padding:10 }}>
+                        <div style={{ fontSize:24, fontWeight:700, color:BRICK }}>{femaleCount}</div>
+                        <div style={{ fontSize:12, color:BRICK }}>หญิง</div>
                       </div>
                     </div>
-                    <span style={{ fontSize:11, padding:"3px 10px", borderRadius:20, fontWeight:500, background:c.visits>=2?"#e8f5ee":"#fdf0ea", color:c.visits>=2?FOREST:BRICK }}>{c.visits>=2?"แนะนำสูง":"ลองชวน"}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Customers */}
-        {tab === "customers" && customers.length > 0 && (
-          <div>
-            <div style={{ display:"flex", gap:10, marginBottom:16, flexWrap:"wrap" }}>
-              <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="ค้นหาชื่อหรือเบอร์โทร..." style={{ ...iStyle, flex:1, minWidth:200 }} />
-              <div style={{ display:"flex", gap:6 }}>
-                {[["all","ทั้งหมด"],["hike","ดงดิบ"],["stay","สวนบ้านนอก"]].map(([f,label])=>{
-                  const active = bizFilter===f;
-                  const bg = active?(f==="stay"?BRICK:FOREST):"#fff";
-                  return <button key={f} onClick={()=>setBizFilter(f)} style={{ padding:"8px 14px", border:`0.5px solid ${active?bg:"#d0cdc8"}`, borderRadius:8, background:bg, color:active?"#fff":"#3a3a35", cursor:"pointer", fontSize:13, fontFamily:"inherit", fontWeight:500 }}>{label}</button>;
-                })}
-              </div>
-            </div>
-            <div style={{ fontSize:12, color:"#999", marginBottom:8 }}>แสดง {filteredCustomers.length} จาก {total} รายการ</div>
-            <div style={{ overflowX:"auto" }}>
-              <table style={{ width:"100%", borderCollapse:"collapse", background:"#fff", borderRadius:12, overflow:"hidden", border:"0.5px solid #e0ddd8", fontSize:13 }}>
-                <thead>
-                  <tr style={{ background:"#f5f0e8" }}>
-                    {["ชื่อ-สกุล","เบอร์โทร","อายุ/เพศ","เลขบัตร","ประเภท","Status","Visits / ห้อง","Note",""].map((h,i)=>(
-                      <th key={i} style={{ padding:"10px 14px", textAlign:"left", fontWeight:600, fontSize:12, color:"#888", borderBottom:"0.5px solid #e0ddd8" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredCustomers.map(c=>(
-                    <tr key={c.id} style={{ borderBottom:"0.5px solid #f5f2ee" }}>
-                      <td style={{ padding:"11px 14px" }}>
-                        <div style={{ fontWeight:500 }}>{c.name}</div>
-                        <SourceBadge source={c.source} />
-                      </td>
-                      <td style={{ padding:"11px 14px" }}>{c.tel || "-"}</td>
-                      <td style={{ padding:"11px 14px" }}>{c.age || "-"} / {c.sex || "-"}</td>
-                      <td style={{ padding:"11px 14px", fontSize:11, color:"#999" }}>{c.idNum||"-"}</td>
-                      <td style={{ padding:"11px 14px" }}><BizBadge biz={c.biz} /></td>
-                      <td style={{ padding:"11px 14px" }}><StatusBadge status={c.status} /></td>
-                      <td style={{ padding:"11px 14px" }}>
-                        <div style={{ fontSize:13, fontWeight:600, color:"#3a3a35" }}>{c.visits}×</div>
-                        {c.lastRoom && <div style={{ fontSize:11, color:"#999", marginTop:2 }}>{c.lastRoom}</div>}
-                        {c.bookings && c.bookings.length > 0 && (
-                          <button onClick={()=>setViewBookings(c)} style={{ background:"transparent", border:"none", color:FOREST, cursor:"pointer", fontSize:11, padding:0, marginTop:2, textDecoration:"underline", fontFamily:"inherit" }}>
-                            ดูประวัติ ({c.bookings.length})
-                          </button>
-                        )}
-                      </td>
-                      <td style={{ padding:"11px 14px", fontSize:12, color:"#999", maxWidth:120, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.note||"-"}</td>
-                      <td style={{ padding:"11px 14px" }}><button onClick={()=>setEditCustomer({...c})} style={{ background:"transparent", border:"0.5px solid #d0cdc8", borderRadius:6, padding:"4px 10px", cursor:"pointer", fontSize:12, color:"#3a3a35", fontFamily:"inherit" }}>แก้ไข</button></td>
-                    </tr>
+                </div>
+                <div style={card}>
+                  <div style={{ fontSize:14, fontWeight:600, color:"#3a3a35", marginBottom:4 }}>Cross-Sell Insights</div>
+                  <div style={{ fontSize:12, color:"#999", marginBottom:12 }}>ลูกค้าโฮมสเตย์ที่ควรชวนลองเดินป่า</div>
+                  {crossSellCandidates.length === 0 && <div style={{ fontSize:13, color:"#bbb", textAlign:"center", padding:"20px 0" }}>ยังไม่มีลูกค้าสายชิลล์</div>}
+                  {crossSellCandidates.map((c,i)=>(
+                    <div key={i} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 0", borderBottom:i<crossSellCandidates.length-1?"0.5px solid #f0ede8":"none" }}>
+                      <div>
+                        <div style={{ fontSize:13, fontWeight:500, color:"#3a3a35" }}>{c.name}</div>
+                        <div style={{ fontSize:11, color:"#999" }}>
+                          {c.source === "agoda" || c.source === "booking" ? `จอง ${c.visits}× · ห้อง ${c.lastRoom || "-"}` : "สวนบ้านนอก → ชวนลองดงดิบ"}
+                        </div>
+                      </div>
+                      <span style={{ fontSize:11, padding:"3px 10px", borderRadius:20, fontWeight:500, background:c.visits>=2?"#e8f5ee":"#fdf0ea", color:c.visits>=2?FOREST:BRICK }}>{c.visits>=2?"แนะนำสูง":"ลองชวน"}</span>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Insurance */}
-        {tab === "insurance" && (
-          <div>
-            <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14, flexWrap:"wrap" }}>
-              <span style={{ fontSize:13, color:"#888", fontWeight:500 }}>วันเดินทาง:</span>
-              <input type="date" value={insDateStart} onChange={e=>setInsDateStart(e.target.value)} style={{ ...iStyle, width:"auto" }} />
-              <span style={{ fontSize:13, color:"#888" }}>ถึง</span>
-              <input type="date" value={insDateEnd} onChange={e=>setInsDateEnd(e.target.value)} style={{ ...iStyle, width:"auto" }} />
-              <button onClick={exportCSV} disabled={insuranceList.length===0} style={{ marginLeft:"auto", background:insuranceList.length?FOREST:"#ccc", color:"#fff", border:"none", padding:"9px 20px", borderRadius:8, cursor:insuranceList.length?"pointer":"not-allowed", fontSize:14, fontFamily:"inherit", fontWeight:500 }}>Export CSV</button>
-            </div>
-            {insuranceList.length === 0 ? (
-              <div style={{ textAlign:"center", padding:"60px 20px", color:"#bbb", fontSize:14 }}>ยังไม่มีข้อมูล — กด Import Excel แล้วเลือกประเภท "ดงดิบ" หรือ "ทั้งสอง"</div>
-            ) : (
-              <>
-                <div style={{ fontSize:13, color:"#888", marginBottom:10 }}>ลูกค้าสำหรับประกัน <b style={{ color:"#3a3a35" }}>{insuranceList.length}</b> คน</div>
+          {/* Customers */}
+          {tab === "customers" && customers.length > 0 && (
+            <div>
+              <div style={{ display:"flex", gap:10, marginBottom:16, flexWrap:"wrap" }}>
+                <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="ค้นหาชื่อหรือเบอร์โทร..." style={{ ...iStyle, flex:1, minWidth:200 }} />
+                <div style={{ display:"flex", gap:6 }}>
+                  {[["all","ทั้งหมด"],["hike","ดงดิบ"],["stay","สวนบ้านนอก"]].map(([f,label])=>{
+                    const active = bizFilter===f;
+                    const bg = active?(f==="stay"?BRICK:FOREST):"#fff";
+                    return <button key={f} onClick={()=>setBizFilter(f)} style={{ padding:"8px 14px", border:`0.5px solid ${active?bg:"#d0cdc8"}`, borderRadius:8, background:bg, color:active?"#fff":"#3a3a35", cursor:"pointer", fontSize:13, fontFamily:"inherit", fontWeight:500 }}>{label}</button>;
+                  })}
+                </div>
+              </div>
+              <div style={{ fontSize:12, color:"#999", marginBottom:8 }}>แสดง {filteredCustomers.length} จาก {total} รายการ</div>
+              <div style={{ overflowX:"auto" }}>
                 <table style={{ width:"100%", borderCollapse:"collapse", background:"#fff", borderRadius:12, overflow:"hidden", border:"0.5px solid #e0ddd8", fontSize:13 }}>
                   <thead>
-                    <tr style={{ background:"#e8f5ee" }}>
-                      {["ชื่อ-นามสกุล","เลขบัตรประชาชน","วันเกิด","ผู้รับผลประโยชน์","ความสัมพันธ์","เบอร์ติดต่อฉุกเฉิน"].map((h,i)=>(
-                        <th key={i} style={{ padding:"10px 14px", textAlign:"left", fontWeight:600, fontSize:12, color:FOREST, borderBottom:"0.5px solid #b8ddc8" }}>{h}</th>
+                    <tr style={{ background:"#f5f0e8" }}>
+                      {["ชื่อ-สกุล","เบอร์โทร","อายุ/เพศ","เลขบัตร","ประเภท","Status","Visits / ห้อง","Note",""].map((h,i)=>(
+                        <th key={i} style={{ padding:"10px 14px", textAlign:"left", fontWeight:600, fontSize:12, color:"#888", borderBottom:"0.5px solid #e0ddd8" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {insuranceList.map((c,i)=>(
-                      <tr key={c.id} style={{ borderBottom:i<insuranceList.length-1?"0.5px solid #f5f2ee":"none" }}>
-                        <td style={{ padding:"11px 14px", fontWeight:500 }}>{c.name}</td>
-                        <td style={{ padding:"11px 14px", fontSize:12 }}>{c.idNum||"-"}</td>
-                        <td style={{ padding:"11px 14px" }}>{c.dob||"-"}</td>
-                        <td style={{ padding:"11px 14px" }}>{c.bene||"-"}</td>
-                        <td style={{ padding:"11px 14px" }}>{c.rel||"-"}</td>
-                        <td style={{ padding:"11px 14px" }}>{c.tel||"-"}</td>
+                    {filteredCustomers.map(c=>(
+                      <tr key={c.id} style={{ borderBottom:"0.5px solid #f5f2ee" }}>
+                        <td style={{ padding:"11px 14px" }}>
+                          <div style={{ fontWeight:500 }}>{c.name}</div>
+                          <SourceBadge source={c.source} />
+                        </td>
+                        <td style={{ padding:"11px 14px" }}>{c.tel || "-"}</td>
+                        <td style={{ padding:"11px 14px" }}>{c.age || "-"} / {c.sex || "-"}</td>
+                        <td style={{ padding:"11px 14px", fontSize:11, color:"#999" }}>{c.idNum||"-"}</td>
+                        <td style={{ padding:"11px 14px" }}><BizBadge biz={c.biz} /></td>
+                        <td style={{ padding:"11px 14px" }}><StatusBadge status={c.status} /></td>
+                        <td style={{ padding:"11px 14px" }}>
+                          <div style={{ fontSize:13, fontWeight:600, color:"#3a3a35" }}>{c.visits}×</div>
+                          {c.lastRoom && <div style={{ fontSize:11, color:"#999", marginTop:2 }}>{c.lastRoom}</div>}
+                          {c.bookings && c.bookings.length > 0 && (
+                            <button onClick={()=>setViewBookings(c)} style={{ background:"transparent", border:"none", color:FOREST, cursor:"pointer", fontSize:11, padding:0, marginTop:2, textDecoration:"underline", fontFamily:"inherit" }}>
+                              ดูประวัติ ({c.bookings.length})
+                            </button>
+                          )}
+                        </td>
+                        <td style={{ padding:"11px 14px", fontSize:12, color:"#999", maxWidth:120, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.note||"-"}</td>
+                        <td style={{ padding:"11px 14px" }}><button onClick={()=>setEditCustomer({...c})} style={{ background:"transparent", border:"0.5px solid #d0cdc8", borderRadius:6, padding:"4px 10px", cursor:"pointer", fontSize:12, color:"#3a3a35", fontFamily:"inherit" }}>แก้ไข</button></td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              </>
-            )}
-          </div>
-        )}
-      </div>
+              </div>
+            </div>
+          )}
+
+          {/* Insurance */}
+          {tab === "insurance" && (
+            <div>
+              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14, flexWrap:"wrap" }}>
+                <span style={{ fontSize:13, color:"#888", fontWeight:500 }}>วันเดินทาง:</span>
+                <input type="date" value={insDateStart} onChange={e=>setInsDateStart(e.target.value)} style={{ ...iStyle, width:"auto" }} />
+                <span style={{ fontSize:13, color:"#888" }}>ถึง</span>
+                <input type="date" value={insDateEnd} onChange={e=>setInsDateEnd(e.target.value)} style={{ ...iStyle, width:"auto" }} />
+                <button onClick={exportCSV} disabled={insuranceList.length===0} style={{ marginLeft:"auto", background:insuranceList.length?FOREST:"#ccc", color:"#fff", border:"none", padding:"9px 20px", borderRadius:8, cursor:insuranceList.length?"pointer":"not-allowed", fontSize:14, fontFamily:"inherit", fontWeight:500 }}>Export CSV</button>
+              </div>
+              {insuranceList.length === 0 ? (
+                <div style={{ textAlign:"center", padding:"60px 20px", color:"#bbb", fontSize:14 }}>ยังไม่มีข้อมูล — กด Import Excel แล้วเลือกประเภท "ดงดิบ" หรือ "ทั้งสอง"</div>
+              ) : (
+                <>
+                  <div style={{ fontSize:13, color:"#888", marginBottom:10 }}>ลูกค้าสำหรับประกัน <b style={{ color:"#3a3a35" }}>{insuranceList.length}</b> คน</div>
+                  <table style={{ width:"100%", borderCollapse:"collapse", background:"#fff", borderRadius:12, overflow:"hidden", border:"0.5px solid #e0ddd8", fontSize:13 }}>
+                    <thead>
+                      <tr style={{ background:"#e8f5ee" }}>
+                        {["ชื่อ-นามสกุล","เลขบัตรประชาชน","วันเกิด","ผู้รับผลประโยชน์","ความสัมพันธ์","เบอร์ติดต่อฉุกเฉิน"].map((h,i)=>(
+                          <th key={i} style={{ padding:"10px 14px", textAlign:"left", fontWeight:600, fontSize:12, color:FOREST, borderBottom:"0.5px solid #b8ddc8" }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {insuranceList.map((c,i)=>(
+                        <tr key={c.id} style={{ borderBottom:i<insuranceList.length-1?"0.5px solid #f5f2ee":"none" }}>
+                          <td style={{ padding:"11px 14px", fontWeight:500 }}>{c.name}</td>
+                          <td style={{ padding:"11px 14px", fontSize:12 }}>{c.idNum||"-"}</td>
+                          <td style={{ padding:"11px 14px" }}>{c.dob||"-"}</td>
+                          <td style={{ padding:"11px 14px" }}>{c.bene||"-"}</td>
+                          <td style={{ padding:"11px 14px" }}>{c.rel||"-"}</td>
+                          <td style={{ padding:"11px 14px" }}>{c.tel||"-"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
+            </div>
+          )}
+
+        </div>
+      )}{/* end !dbLoading */}
 
       {/* Import Modal */}
       {pendingRows && (
@@ -998,6 +1005,9 @@ export default function CRM() {
           </div>
         </div>
       )}
+    </div>
+    </div>
+    </div>
     </div>
     </div>
   );
