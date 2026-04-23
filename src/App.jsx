@@ -1006,9 +1006,5 @@ export default function CRM() {
         </div>
       )}
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
   );
 }
